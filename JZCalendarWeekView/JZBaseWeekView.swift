@@ -16,9 +16,18 @@ public protocol JZBaseViewDelegate: class {
     func initDateDidChange(_ weekView: JZBaseWeekView, initDate: Date)
 }
 
+public protocol ScrollEventWeekDelegate: class {
+	func pageSectionDidScroll(with currentDate: Date)
+}
+
 extension JZBaseViewDelegate {
     // Keep it optional
     func initDateDidChange(_ weekView: JZBaseWeekView, initDate: Date) {}
+}
+
+extension ScrollEventWeekDelegate {
+    // Keep it optional
+	func pageSectionDidScroll(with currentDate: Date) {}
 }
 
 open class JZBaseWeekView: UIView {
@@ -67,6 +76,8 @@ open class JZBaseWeekView: UIView {
     public var allDayEventsBySection = [Date: [JZAllDayEvent]]()
 
     public weak var baseDelegate: JZBaseViewDelegate?
+	open weak var scrollEventWeekDelegate: ScrollEventWeekDelegate?
+
     open var contentViewWidth: CGFloat {
         return frame.width - flowLayout.rowHeaderWidth - flowLayout.contentsMargin.left - flowLayout.contentsMargin.right
     }
@@ -144,7 +155,7 @@ open class JZBaseWeekView: UIView {
 
     /**
      Basic Setup method for JZCalendarWeekView,it **must** be called.
-     
+
      - Parameters:
         - numOfDays: Number of days in a page
         - setDate: The initial set date, the first date in current page except WeekView (numOfDays = 7)
@@ -332,7 +343,7 @@ open class JZBaseWeekView: UIView {
 
     /**
         Used to Refresh the weekView when viewWillTransition
-     
+
         **Must override viewWillTransition in the ViewController and call this function**
     */
     open func refreshWeekView() {
@@ -590,6 +601,7 @@ extension JZBaseWeekView: UICollectionViewDelegate, UICollectionViewDelegateFlow
         let currentInitDate = currentDate.add(component: .day, value: -numOfDays)
         self.initDate = currentInitDate
         self.forceReload()
+		scrollEventWeekDelegate?.pageSectionDidScroll(with: currentDate)
     }
 
     /// pageScroll loading next page or previous page (Only three pages (3*numOfDays) exist at the same time)
