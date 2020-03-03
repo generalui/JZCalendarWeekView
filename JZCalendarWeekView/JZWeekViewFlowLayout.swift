@@ -312,7 +312,20 @@ open class JZWeekViewFlowLayout: UICollectionViewFlowLayout {
             let startHourY = CGFloat(itemStartTime.hour!) * hourHeight
             let startMinuteY = CGFloat(itemStartTime.minute!) * minuteHeight
             let endHourY: CGFloat
-            let endMinuteY = CGFloat(itemEndTime.minute!) * minuteHeight
+            let endMinuteY: CGFloat
+            let calendar = Calendar.current
+            if let endDate = calendar.date(from: itemEndTime), let startDate = calendar.date(from: itemStartTime) {
+                let minsdiff =  (endDate.timeIntervalSince1970 - startDate.timeIntervalSince1970)/60
+                if minsdiff >= 15 {
+                    endMinuteY = CGFloat(itemEndTime.minute!) * minuteHeight
+                }
+                else {
+                    endMinuteY = CGFloat(itemStartTime.minute!+15) * minuteHeight
+                }
+            }
+            else {
+                endMinuteY = CGFloat(itemEndTime.minute!) * minuteHeight
+            }
 
             if itemEndTime.day! != itemStartTime.day! {
                 endHourY = CGFloat(Calendar.current.maximumRange(of: .hour)!.count) * hourHeight + CGFloat(itemEndTime.hour!) * hourHeight
