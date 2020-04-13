@@ -46,7 +46,7 @@ open class JZAllDayHeader: UICollectionReusableView {
         stackView.setAnchorConstraintsFullSizeTo(view: scrollView)
         stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         stackView.spacing = 0
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .fillEqually
         stackView.axis = .vertical
     }
 
