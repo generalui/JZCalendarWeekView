@@ -11,7 +11,7 @@ import UIKit
 open class JZAllDayHeader: UICollectionReusableView {
 
     /// The height of an allDayEvent within the allDayHeader (default: 25)
-    public var eventHeight: CGFloat = 25
+    public var eventHeight: CGFloat = 35
     let scrollView = UIScrollView()
     let stackView = UIStackView()
 
@@ -45,7 +45,7 @@ open class JZAllDayHeader: UICollectionReusableView {
         scrollView.addSubview(stackView)
         stackView.setAnchorConstraintsFullSizeTo(view: scrollView)
         stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        stackView.spacing = 3
+        stackView.spacing = 0
         stackView.distribution = .equalSpacing
         stackView.axis = .vertical
     }
