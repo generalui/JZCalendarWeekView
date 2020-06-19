@@ -320,7 +320,13 @@ open class JZWeekViewFlowLayout: UICollectionViewFlowLayout {
                     endMinuteY = CGFloat(itemEndTime.minute!) * minuteHeight
                 }
                 else {
-                    endMinuteY = CGFloat(itemStartTime.minute!+15) * minuteHeight
+                    // Calculate new end time by adding 15 mins to startDate
+                    let newEndTime = Calendar.current.dateComponents([.day, .hour, .minute], from: startDate.addingTimeInterval(60*15))
+                    if newEndTime.minute == 0 {
+                        endMinuteY = CGFloat(59) * minuteHeight
+                    } else {
+                        endMinuteY = CGFloat(newEndTime.minute!) * minuteHeight
+                    }
                 }
             }
             else {
